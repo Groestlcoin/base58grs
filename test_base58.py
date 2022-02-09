@@ -2,7 +2,7 @@ import pytest
 from itertools import product
 from random import getrandbits
 from hamcrest import assert_that, equal_to, calling, raises
-from base58 import (
+from base58grs import (
     b58encode, b58decode, b58encode_check, b58decode_check, b58encode_int,
     b58decode_int,
     BITCOIN_ALPHABET,

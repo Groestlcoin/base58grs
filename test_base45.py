@@ -1,5 +1,5 @@
 from hamcrest import assert_that, equal_to, calling, raises
-from base58 import (b58encode, b58decode, b58encode_check, b58decode_check)
+from base58grs import (b58encode, b58decode, b58encode_check, b58decode_check)
 
 BASE45_ALPHABET = b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:"
 

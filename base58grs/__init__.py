@@ -1,16 +1,16 @@
-'''Base58 encoding
+'''Base58grs encoding
 
 Implementations of Base58 and Base58Check encodings that are compatible
-with the bitcoin network.
+with the groestlcoin network.
 '''
 
-# This module is based upon base58 snippets found scattered over many bitcoin
+# This module is based upon base58grs snippets found scattered over many bitcoin
 # tools written in python. From what I gather the original source is from a
 # forum post by Gavin Andresen, so direct your praise to him.
 # This module adds shiny packaging and support for python3.
 
 from functools import lru_cache
-from hashlib import sha256
+import groestlcoin_hash
 from typing import Mapping, Union
 
 __version__ = '2.1.1'
@@ -36,7 +36,7 @@ def b58encode_int(
     i: int, default_one: bool = True, alphabet: bytes = BITCOIN_ALPHABET
 ) -> bytes:
     """
-    Encode an integer using Base58
+    Encode an integer using Base58grs
     """
     if not i and default_one:
         return alphabet[0:1]
@@ -52,7 +52,7 @@ def b58encode(
     v: Union[str, bytes], alphabet: bytes = BITCOIN_ALPHABET
 ) -> bytes:
     """
-    Encode a string using Base58
+    Encode a string using Base58grs
     """
     v = scrub_input(v)
 
@@ -67,7 +67,7 @@ def b58encode(
 
 
 @lru_cache()
-def _get_base58_decode_map(alphabet: bytes,
+def _get_base58grs_decode_map(alphabet: bytes,
                            autofix: bool) -> Mapping[int, int]:
     invmap = {char: index for index, char in enumerate(alphabet)}
 
@@ -87,13 +87,13 @@ def b58decode_int(
     autofix: bool = False
 ) -> int:
     """
-    Decode a Base58 encoded string as an integer
+    Decode a Base58grs encoded string as an integer
     """
     if b' ' not in alphabet:
         v = v.rstrip()
     v = scrub_input(v)
 
-    map = _get_base58_decode_map(alphabet, autofix=autofix)
+    map = _get_base58grs_decode_map(alphabet, autofix=autofix)
 
     decimal = 0
     base = len(alphabet)
@@ -112,7 +112,7 @@ def b58decode(
     autofix: bool = False
 ) -> bytes:
     """
-    Decode a Base58 encoded string
+    Decode a Base58grs encoded string
     """
     v = v.rstrip()
     v = scrub_input(v)
@@ -135,11 +135,11 @@ def b58encode_check(
     v: Union[str, bytes], alphabet: bytes = BITCOIN_ALPHABET
 ) -> bytes:
     """
-    Encode a string using Base58 with a 4 character checksum
+    Encode a string using Base58grs with a 4 character checksum
     """
     v = scrub_input(v)
 
-    digest = sha256(sha256(v).digest()).digest()
+    digest = groestlcoin_hash.getHash(v, len(v))
     return b58encode(v + digest[:4], alphabet=alphabet)
 
 
@@ -147,11 +147,11 @@ def b58decode_check(
     v: Union[str, bytes], alphabet: bytes = BITCOIN_ALPHABET, *,
     autofix: bool = False
 ) -> bytes:
-    '''Decode and verify the checksum of a Base58 encoded string'''
+    '''Decode and verify the checksum of a Base58grs encoded string'''
 
     result = b58decode(v, alphabet=alphabet, autofix=autofix)
     result, check = result[:-4], result[-4:]
-    digest = sha256(sha256(result).digest()).digest()
+    digest = groestlcoin_hash.getHash(result, len(result))
 
     if check != digest[:4]:
         raise ValueError("Invalid checksum")

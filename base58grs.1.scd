@@ -1,12 +1,12 @@
-BASE58(1)
+BASE58GRS(1)
 
 # NAME
 
-base58 - Base58 encode or decode
+base58grs - Base58grs encode or decode
 
 # SYNOPSIS
 
-*base58* [options...] [FILE]
+*base58grs* [options...] [FILE]
 
 # OPTIONS
 
@@ -21,6 +21,6 @@ base58 - Base58 encode or decode
 
 # DESCRIPTION
 
-Base58 encode or decode FILE (or standard input) to standard output. Optionally
+Base58grs encode or decode FILE (or standard input) to standard output. Optionally
 a checksum can be used that is given by the first 4 bytes of the digest after
 two passes of sha256.

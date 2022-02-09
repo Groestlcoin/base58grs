@@ -1,10 +1,10 @@
-"""Base58 encode or decode FILE (or standard input) to standard output."""
+"""Base58grs encode or decode FILE (or standard input) to standard output."""
 
 import argparse
 import sys
 from typing import Callable, Dict, Tuple
 
-from base58 import b58decode, b58decode_check, b58encode, b58encode_check
+from base58grs import b58decode, b58decode_check, b58encode, b58encode_check
 
 _fmap = {
     (False, False): b58encode,
